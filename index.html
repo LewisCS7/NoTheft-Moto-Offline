@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tableau de bord de suivi de moto en temps réel">
+    <title>NoTheft Moto Offline</title>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Lato&family=Open+Sans&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato&family=Open+Sans&display=swap"></noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+      /* Réinitialisation des styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Open Sans', sans-serif;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #ffffff, #d4d4d4);
+      }
+
+      /* Conteneur principal */
+      #webcrumbs {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: white;
+        border-radius: 24px;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      /* En-tête */
+      header {
+        padding: 16px;
+        background-color: rgb(247, 247, 247);
+        border-bottom: 1px solid rgb(220, 220, 220);
+      }
+
+      header h1 {
+        font-size: 24px;
+        font-weight: bold;
+        color: rgb(40, 40, 40);
+      }
+
+      /* Carte interactive */
+      .map-container {
+        flex: 1;
+        width: 100%;
+        height: calc(100vh - 120px); /* Ajustement pour la barre de navigation et l'en-tête */
+        background-color: rgb(238, 238, 238);
+      }
+
+      .map-container iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      /* Barre de navigation */
+      nav.fixed-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: white;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        padding: 8px 0;
+      }
+
+      nav.fixed-nav .nav-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        padding: 0 16px;
+      }
+
+      nav.fixed-nav button {
+        background-color: rgb(238, 238, 238);
+        color: rgb(40, 40, 40);
+        border-radius: 9999px;
+        padding: 8px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: none;
+        transition: background-color 0.3s ease;
+      }
+
+      nav.fixed-nav button:hover {
+        background-color: rgb(220, 220, 220);
+      }
+
+      nav.fixed-nav button:hover i {
+        color: blue; /* Icônes bleues au survol */
+      }
+
+      /* Masquer le texte sur mobile */
+      .hide-text-on-mobile {
+        display: none;
+      }
+
+      @media (min-width: 640px) {
+        .hide-text-on-mobile {
+          display: inline;
+          margin-left: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main id="webcrumbs" role="main">
+      <!-- En-tête -->
+      <header>
+        <h1>Tableau de bord</h1>
+      </header>
+
+      <!-- Carte interactive -->
+      <div class="map-container">
+        <iframe 
+          title="Moto Map" 
+          src="https://www.openstreetmap.org/export/embed.html?bbox=-0.09%2C51.505%2C-0.075%2C51.515&amp;layer=mapnik" 
+          aria-label="Carte interactive montrant la position de la moto"
+        ></iframe>
+      </div>
+    </main>
+
+    <!-- Barre de navigation fixée en bas -->
+    <nav class="fixed-nav">
+      <div class="nav-buttons">
+        <!-- Bouton Accueil -->
+        <button aria-label="Accueil">
+          <i class="fas fa-home"></i>
+          <span class="hide-text-on-mobile">Accueil</span>
+        </button>
+
+        <!-- Bouton Historique -->
+        <button aria-label="Voir l'historique">
+          <i class="fas fa-history"></i>
+          <span class="hide-text-on-mobile">Historique</span>
+        </button>
+
+        <!-- Bouton Localisation -->
+        <button aria-label="Localiser la moto">
+          <i class="fas fa-map-marker-alt"></i>
+          <span class="hide-text-on-mobile">Localisation</span>
+        </button>
+
+        <!-- Bouton Configuration -->
+        <button aria-label="Configurer la moto">
+          <i class="fas fa-cog"></i>
+          <span class="hide-text-on-mobile">Configuration</span>
+        </button>
+
+        <!-- Bouton Alertes -->
+        <button aria-label="Recevoir les alertes">
+          <i class="fas fa-bell"></i>
+          <span class="hide-text-on-mobile">Alertes</span>
+        </button>
+      </div>
+    </nav>
+  </body>
+</html>
