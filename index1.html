@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tableau de bord de suivi de moto en temps réel">
+    <title>Webcrumbs - Suivi de moto</title>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Lato&family=Open+Sans&family=Montserrat:wght@700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato&family=Open+Sans&family=Montserrat:wght@700&display=swap"></noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+      /* Styles de base */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Open Sans', sans-serif;
+        background: linear-gradient(135deg, #ffffff, #d4d4d4);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
+
+      /* Conteneur principal */
+      #webcrumbs {
+        width: 100%;
+        max-width: 1200px;
+        background-color: white;
+        border-radius: 24px;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        padding: 24px;
+      }
+
+      /* Grille responsive */
+      .grid-responsive {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 12px;
+      }
+
+      @media (min-width: 768px) {
+        .grid-responsive {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .grid-responsive {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      /* Barre de navigation */
+      nav.fixed-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: white;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        padding: 8px 0;
+      }
+
+      nav.fixed-nav .nav-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        padding: 0 16px;
+      }
+
+      nav.fixed-nav button {
+        background-color: rgb(238, 238, 238);
+        color: rgb(40, 40, 40);
+        border-radius: 9999px;
+        padding: 8px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: none;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      nav.fixed-nav button:hover {
+        background-color: blue;
+        color: white;
+      }
+
+      nav.fixed-nav button:active {
+        background-color: darkblue;
+        color: white;
+      }
+
+      nav.fixed-nav button.active {
+        background-color: blue;
+        color: white;
+      }
+
+      nav.fixed-nav button:hover i {
+        color: white;
+      }
+
+      /* Masquer le texte sur mobile */
+      .hide-text-on-mobile {
+        display: none;
+      }
+
+      @media (min-width: 640px) {
+        .hide-text-on-mobile {
+          display: inline;
+          margin-left: 8px;
+        }
+      }
+
+      /* Carte interactive */
+      .map-container {
+        position: relative;
+        width: 100%;
+        height: 300px; /* Hauteur par défaut pour la page d'accueil */
+        background-color: rgb(238, 238, 238);
+        border-radius: 12px;
+        overflow: hidden;
+        margin-top: 16px;
+      }
+
+      .map-container iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      /* Styles pour les sections */
+      section {
+        background-color: rgb(247, 247, 247);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+
+      section h2 {
+        font-size: 18px;
+        font-weight: bold;
+        color: rgb(40, 40, 40);
+        margin-bottom: 12px;
+        text-align: center;
+        font-family: 'Montserrat', sans-serif;
+      }
+
+      section p {
+        font-size: 14px;
+        color: rgb(40, 40, 40);
+        margin: 0;
+      }
+
+      /* Styles pour la carte d'état */
+      .status-card {
+        background-color: white;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .status-icon {
+        position: relative;
+        font-size: 32px;
+        color: #2196F3;
+      }
+
+      .status-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: #4CAF50;
+        color: white;
+        font-size: 12px;
+        padding: 4px 8px;
+        border-radius: 12px;
+      }
+
+      .status-badge.warning {
+        background-color: #FF9800;
+      }
+
+      .status-badge.alert {
+        background-color: #F44336;
+      }
+
+      .status-details {
+        flex: 1;
+      }
+
+      .status-details p {
+        margin: 8px 0;
+        font-size: 14px;
+        color: #333;
+      }
+
+      .status-details i {
+        margin-right: 8px;
+        color: #2196F3;
+      }
+
+      /* Bouton pour centrer la carte */
+      .center-map-button {
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+        background-color: #2196F3;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .center-map-button:hover {
+        background-color: #1976D2;
+      }
+
+      /* Statut des capteurs */
+      .sensor-status {
+        margin-top: 16px;
+      }
+
+      .sensor-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 12px;
+      }
+
+      .sensor-item {
+        background-color: white;
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .sensor-item i {
+        font-size: 24px;
+        color: #2196F3;
+      }
+
+      .sensor-item span {
+        display: block;
+        margin-top: 8px;
+        font-size: 14px;
+      }
+
+      .sensor-value {
+        font-weight: bold;
+        margin-top: 4px;
+      }
+
+      .sensor-value.normal {
+        color: #4CAF50;
+      }
+
+      .sensor-value.warning {
+        color: #FF9800;
+      }
+
+      .sensor-value.alert {
+        color: #F44336;
+      }
+
+      /* Styles pour l'état des connexions */
+      .connections-status {
+        margin-bottom: 24px;
+      }
+
+      .connection-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+      }
+
+      .connection-item {
+        background-color: white;
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .connection-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .connection-item i {
+        font-size: 24px;
+        color: #2196F3;
+      }
+
+      .connection-item span {
+        display: block;
+        margin-top: 8px;
+        font-size: 14px;
+      }
+
+      .connection-value {
+        font-weight: bold;
+        margin-top: 4px;
+      }
+
+      .connection-value.connected {
+        color: #4CAF50;
+      }
+
+      .connection-value.disconnected {
+        color: #F44336;
+      }
+
+      /* Styles pour l'état des batteries */
+      .batteries-status {
+        margin-top: 24px;
+      }
+
+      .battery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+      }
+
+      .battery-item {
+        background-color: white;
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .battery-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .battery-item i {
+        font-size: 24px;
+        color: #2196F3;
+      }
+
+      .battery-item span {
+        display: block;
+        margin-top: 8px;
+        font-size: 14px;
+      }
+
+      .battery-item progress {
+        width: 100%;
+        height: 10px;
+        border-radius: 5px;
+        margin-top: 8px;
+      }
+
+      .battery-item progress::-webkit-progress-bar {
+        background-color: #f0f0f0;
+        border-radius: 5px;
+      }
+
+      .battery-item progress::-webkit-progress-value {
+        background-color: #4CAF50;
+        border-radius: 5px;
+      }
+
+      .battery-item progress.low {
+        background-color: #F44336;
+      }
+
+      .battery-value {
+        font-weight: bold;
+        margin-top: 4px;
+      }
+
+      /* Styles pour les notifications */
+      .notification-item {
+        display: grid;
+        grid-template-columns: 20px 1fr 2fr;
+        gap: 12px;
+        align-items: center;
+        font-size: 14px;
+        color: rgb(40, 40, 40);
+      }
+
+      .notification-item span {
+        font-weight: 500;
+      }
+
+      /* Contenu spécifique aux boutons */
+      .content-section {
+        display: none;
+      }
+
+      .content-section.active {
+        display: block;
+      }
+
+      /* Styles pour les batteries */
+      .battery-status {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 8px;
+      }
+
+      .battery-status span {
+        font-size: 14px;
+        color: rgb(40, 40, 40);
+      }
+
+      .battery-status progress {
+        width: 60%;
+        height: 10px;
+        border-radius: 5px;
+      }
+
+      /* Styles pour l'état des connexions */
+      .connection-status {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 8px;
+      }
+
+      .connection-status span {
+        font-size: 14px;
+        color: rgb(40, 40, 40);
+      }
+
+      .connection-status i {
+        font-size: 16px;
+      }
+
+      .connection-status .connected {
+        color: green;
+      }
+
+      .connection-status .disconnected {
+        color: red;
+      }
+
+      /* Styles pour l'image */
+      .architecture-image {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        display: block;
+        border-radius: 12px;
+        margin-bottom: 16px;
+      }
+
+      /* Styles pour les éléments de configuration */
+      .setting-item {
+        margin-bottom: 16px;
+      }
+
+      .setting-item h3 {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 8px;
+      }
+
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 24px;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 22px;
+        width: 22px;
+        left: 10px;
+        bottom: 1px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: #2196F3;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(26px);
+      }
+
+      .notification-settings label {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .save-button {
+        background-color: #2196F3;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .save-button:hover {
+        background-color: #1976D2;
+      }
+
+      /* Styles pour les alertes */
+      .alert-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .alert-item {
+        display: flex;
+        align-items: center;
+        background-color: white;
+        border-radius: 12px;
+        padding: 12px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .alert-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .alert-icon {
+        font-size: 24px;
+        margin-right: 12px;
+      }
+
+      .alert-details {
+        flex: 1;
+      }
+
+      .alert-details h3 {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 4px;
+      }
+
+      .alert-details p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+      }
+
+      .alert-timer {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        color: #888;
+        margin-top: 8px;
+      }
+
+      .alert-timer i {
+        margin-right: 4px;
+      }
+
+      .alert-action {
+        background-color: #2196F3;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .alert-action:hover {
+        background-color: #1976D2;
+      }
+
+      /* Couleurs spécifiques pour les types d'alertes */
+      .vibration-alert .alert-icon {
+        color: #FF9800; /* Orange */
+      }
+
+      .movement-alert .alert-icon {
+        color: #F44336; /* Rouge */
+      }
+
+      .battery-alert .alert-icon {
+        color: #FFC107; /* Jaune */
+      }
+
+      /* Styles modernisés pour la section Configuration */
+      .setting-card {
+        background-color: white;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .setting-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .setting-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .setting-header i {
+        font-size: 24px;
+        color: #2196F3;
+        margin-right: 12px;
+      }
+
+      .setting-header h3 {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        margin: 0;
+      }
+
+      .setting-body {
+        margin-bottom: 12px;
+      }
+
+      .setting-body label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #555;
+      }
+
+      .setting-body input[type="checkbox"] {
+        margin-right: 8px;
+      }
+
+      .setting-body input[type="range"] {
+        width: 100%;
+        margin-top: 8px;
+      }
+
+      .setting-body select {
+        width: 100%;
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        font-size: 14px;
+        color: #333;
+      }
+
+      .setting-description {
+        font-size: 12px;
+        color: #777;
+        margin: 0;
+      }
+
+      /* Boutons de sauvegarde et réinitialisation */
+      .setting-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .save-button, .reset-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .save-button {
+        background-color: #2196F3;
+        color: white;
+      }
+
+      .save-button:hover {
+        background-color: #1976D2;
+      }
+
+      .reset-button {
+        background-color: #f44336;
+        color: white;
+      }
+
+      .reset-button:hover {
+        background-color: #d32f2f;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="webcrumbs" role="main">
+      <!-- Contenu spécifique aux boutons -->
+      <div id="home-content" class="content-section active">
+        <!-- Tableau de bord -->
+        <section>
+          <h2>Tableau de bord</h2>
+          <p>Bienvenue sur le tableau de bord de suivi de votre moto.</p>
+        </section>
+
+        <!-- Section État de la moto -->
+        <section aria-labelledby="moto-status">
+          <h2 id="moto-status">État de la moto</h2>
+          <div class="status-card">
+            <!-- Icône et état général -->
+            <div class="status-icon">
+              <i class="fas fa-motorcycle"></i>
+              <span class="status-badge normal">Normal</span>
+            </div>
+            <!-- Détails de l'état -->
+            <div class="status-details">
+              <p><i class="fas fa-info-circle"></i> La moto est actuellement <strong>à l'arrêt</strong>.</p>
+              <p><i class="fas fa-map-marker-alt"></i> Position actuelle : <strong>12 Rue de la Moto, Paris</strong></p>
+              <p><i class="fas fa-clock"></i> Dernière mise à jour : <time datetime="2023-10-12T14:35:00">12/10/2023 14:35</time></p>
+            </div>
+          </div>
+
+          <!-- Carte interactive -->
+          <div class="map-container">
+            <iframe 
+              title="Moto Map" 
+              src="https://www.openstreetmap.org/export/embed.html?bbox=-0.09%2C51.505%2C-0.075%2C51.515&amp;layer=mapnik" 
+              aria-label="Carte interactive montrant la position de la moto"
+            ></iframe>
+            <button class="center-map-button">
+              <i class="fas fa-crosshairs"></i> Centrer sur la moto
+            </button>
+          </div>
+
+          <!-- Statut des capteurs -->
+          <div class="sensor-status">
+            <h3>Statut des capteurs</h3>
+            <div class="sensor-grid">
+              <div class="sensor-item">
+                <i class="fas fa-vibration"></i>
+                <span>Vibration</span>
+                <span class="sensor-value normal">Normal</span>
+              </div>
+              <div class="sensor-item">
+                <i class="fas fa-running"></i>
+                <span>Mouvement</span>
+                <span class="sensor-value warning">Suspect</span>
+              </div>
+              <div class="sensor-item">
+                <i class="fas fa-battery-three-quarters"></i>
+                <span>Batterie</span>
+                <span class="sensor-value normal">75%</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div id="connections-batteries-content" class="content-section">
+        <!-- Section Connexions & Batteries -->
+        <section aria-labelledby="connections-batteries">
+          <h2 id="connections-batteries">Connexions & Batteries</h2>
+
+          <!-- État des connexions -->
+          <div class="connections-status">
+            <h3>État des connexions</h3>
+            <div class="connection-grid">
+              <div class="connection-item">
+                <i class="fas fa-bluetooth-b"></i>
+                <span>Bluetooth1 - Lora1</span>
+                <span class="connection-value connected">Connecté</span>
+              </div>
+              <div class="connection-item">
+                <i class="fas fa-wifi"></i>
+                <span>Lora1 - Lora2</span>
+                <span class="connection-value disconnected">Déconnecté</span>
+              </div>
+              <div class="connection-item">
+                <i class="fas fa-bluetooth-b"></i>
+                <span>Lora2 - Bluetooth du téléphone</span>
+                <span class="connection-value connected">Connecté</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- État des batteries -->
+          <div class="batteries-status">
+            <h3>État des batteries</h3>
+            <div class="battery-grid">
+              <div class="battery-item">
+                <i class="fas fa-battery-three-quarters"></i>
+                <span>Batterie 1</span>
+                <progress value="75" max="100"></progress>
+                <span class="battery-value">75%</span>
+              </div>
+              <div class="battery-item">
+                <i class="fas fa-battery-half"></i>
+                <span>Batterie 2</span>
+                <progress value="50" max="100"></progress>
+                <span class="battery-value">50%</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div id="location-content" class="content-section">
+        <section>
+          <h2>Localisation</h2>
+          <p>Suivez la position de votre moto en temps réel.</p>
+
+          <!-- Carte interactive en plein écran -->
+          <div class="map-container full-screen-map">
+            <iframe 
+              title="Moto Map" 
+              src="https://www.openstreetmap.org/export/embed.html?bbox=-0.09%2C51.505%2C-0.075%2C51.515&amp;layer=mapnik" 
+              aria-label="Carte interactive montrant la position de la moto"
+            ></iframe>
+            <!-- Contrôles de la carte -->
+            <div class="map-controls">
+              <button class="center-map-button">
+                <i class="fas fa-crosshairs"></i> Centrer sur la moto
+              </button>
+              <button class="tracking-button">
+                <i class="fas fa-satellite"></i> Suivi en temps réel
+              </button>
+            </div>
+            <!-- Panneau d'informations -->
+            <div class="map-info-panel">
+              <h3>Position actuelle</h3>
+              <p><i class="fas fa-map-marker-alt"></i> <strong>Coordonnées GPS :</strong> 48.8566° N, 2.3522° E</p>
+              <p><i class="fas fa-clock"></i> <strong>Dernière mise à jour :</strong> <time datetime="2023-10-12T14:35:00">12/10/2023 14:35</time></p>
+            </div>
+          </div>
+
+          <!-- Historique des positions -->
+          <div class="location-history">
+            <h3>Historique des positions</h3>
+            <div class="history-list">
+              <div class="history-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="history-details">
+                  <p><strong>12 Rue de la Moto, Paris</strong></p>
+                  <p><time datetime="2023-10-12T14:35:00">12/10/2023 14:35</time></p>
+                </div>
+              </div>
+              <div class="history-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="history-details">
+                  <p><strong>15 Avenue des Champs-Élysées, Paris</strong></p>
+                  <p><time datetime="2023-10-12T12:15:00">12/10/2023 12:15</time></p>
+                </div>
+              </div>
+              <div class="history-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="history-details">
+                  <p><strong>10 Rue de Rivoli, Paris</strong></p>
+                  <p><time datetime="2023-10-12T10:00:00">12/10/2023 10:00</time></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bouton de partage de localisation -->
+          <div class="share-location">
+            <button class="share-button">
+              <i class="fas fa-share-alt"></i> Partager la localisation
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <div id="settings-content" class="content-section">
+        <section>
+          <h2>Configuration</h2>
+          <p>Personnalisez les paramètres de votre moto selon vos préférences.</p>
+
+          <!-- Section Alarme anti-vol -->
+          <div class="setting-card">
+            <div class="setting-header">
+              <i class="fas fa-shield-alt"></i>
+              <h3>Alarme anti-vol</h3>
+            </div>
+            <div class="setting-body">
+              <label class="switch">
+                <input type="checkbox" id="alarm-toggle" checked>
+                <span class="slider round"></span>
+              </label>
+              <span>Activer l'alarme</span>
+            </div>
+            <p class="setting-description">
+              Activez cette option pour recevoir des alertes en cas de mouvement suspect.
+            </p>
+          </div>
+
+          <!-- Section Notifications -->
+          <div class="setting-card">
+            <div class="setting-header">
+              <i class="fas fa-bell"></i>
+              <h3>Notifications</h3>
+            </div>
+            <div class="setting-body">
+              <label>
+                <input type="checkbox" name="notification" value="movement" checked>
+                Détection de mouvement
+              </label>
+              <label>
+                <input type="checkbox" name="notification" value="alarm">
+                Activation de l'alarme
+              </label>
+              <label>
+                <input type="checkbox" name="notification" value="battery">
+                Niveau de batterie faible
+              </label>
+            </div>
+            <p class="setting-description">
+              Choisissez les types de notifications que vous souhaitez recevoir.
+            </p>
+          </div>
+
+          <!-- Section Sensibilité des capteurs -->
+          <div class="setting-card">
+            <div class="setting-header">
+              <i class="fas fa-tachometer-alt"></i>
+              <h3>Sensibilité des capteurs</h3>
+            </div>
+            <div class="setting-body">
+              <label for="sensitivity">Niveau de sensibilité :</label>
+              <input type="range" id="sensitivity" name="sensitivity" min="1" max="10" value="5">
+              <span id="sensitivity-value">5</span>
+            </div>
+            <p class="setting-description">
+              Ajustez la sensibilité des capteurs de vibration et de mouvement.
+            </p>
+          </div>
+
+          <!-- Section Sécurité -->
+          <div class="setting-card">
+            <div class="setting-header">
+              <i class="fas fa-lock"></i>
+              <h3>Sécurité</h3>
+            </div>
+            <div class="setting-body">
+              <label for="security-mode">Mode de sécurité :</label>
+              <select id="security-mode" name="security-mode">
+                <option value="low">Faible</option>
+                <option value="medium" selected>Moyen</option>
+                <option value="high">Élevé</option>
+              </select>
+            </div>
+            <p class="setting-description">
+              Choisissez le niveau de sécurité pour votre moto.
+            </p>
+          </div>
+
+          <!-- Boutons de sauvegarde et réinitialisation -->
+          <div class="setting-actions">
+            <button class="save-button">
+              <i class="fas fa-save"></i> Sauvegarder les paramètres
+            </button>
+            <button class="reset-button">
+              <i class="fas fa-undo"></i> Réinitialiser
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <div id="alerts-content" class="content-section">
+        <section>
+          <h2>Alertes</h2>
+          <div class="alert-list">
+            <!-- Alerte de vibration -->
+            <div class="alert-item vibration-alert">
+              <div class="alert-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <div class="alert-details">
+                <h3>Vibration détectée</h3>
+                <p>Une vibration sur votre moto a été détectée.</p>
+                <div class="alert-timer">
+                  <i class="fas fa-clock"></i>
+                  <span>Depuis 00:00:14</span>
+                </div>
+              </div>
+              <button class="alert-action">Marquer comme lue</button>
+            </div>
+
+            <!-- Alerte de mouvement suspect -->
+            <div class="alert-item movement-alert">
+              <div class="alert-icon">
+                <i class="fas fa-running"></i>
+              </div>
+              <div class="alert-details">
+                <h3>Mouvement suspect</h3>
+                <p>Un mouvement suspect a été détecté près de votre moto.</p>
+                <div class="alert-timer">
+                  <i class="fas fa-clock"></i>
+                  <span>Depuis 00:01:30</span>
+                </div>
+              </div>
+              <button class="alert-action">Marquer comme lue</button>
+            </div>
+
+            <!-- Alerte de niveau de batterie faible -->
+            <div class="alert-item battery-alert">
+              <div class="alert-icon">
+                <i class="fas fa-battery-quarter"></i>
+              </div>
+              <div class="alert-details">
+                <h3>Batterie faible</h3>
+                <p>La batterie de votre dispositif 1 de suivi est faible.</p>
+                <div class="alert-timer">
+                  <i class="fas fa-clock"></i>
+                  <span>Depuis 00:05:00</span>
+                </div>
+              </div>
+              <button class="alert-action">Marquer comme lue</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Barre de navigation fixée en bas -->
+    <nav class="fixed-nav">
+      <div class="nav-buttons">
+        <!-- Bouton Accueil -->
+        <button id="home-button" aria-label="Accueil" class="active">
+          <i class="fas fa-home"></i>
+          <span class="hide-text-on-mobile">Accueil</span>
+        </button>
+
+        <!-- Bouton Connexions & Batteries -->
+        <button id="connections-batteries-button" aria-label="Connexions & Batteries">
+          <i class="fas fa-plug"></i>
+          <span class="hide-text-on-mobile">Connectivité</span>
+        </button>
+
+        <!-- Bouton Localisation -->
+        <button id="location-button" aria-label="Localiser la moto">
+          <i class="fas fa-map-marker-alt"></i>
+          <span class="hide-text-on-mobile">Localisation</span>
+        </button>
+
+        <!-- Bouton Alertes -->
+        <button id="alerts-button" aria-label="Recevoir les alertes">
+          <i class="fas fa-bell"></i>
+          <span class="hide-text-on-mobile">Alertes</span>
+        </button>
+
+        <!-- Bouton Configuration -->
+        <button id="settings-button" aria-label="Configurer la moto">
+          <i class="fas fa-cog"></i>
+          <span class="hide-text-on-mobile">Configuration</span>
+        </button>
+      </div>
+    </nav>
+
+    <script>
+      // JavaScript pour gérer le clic sur les boutons
+      const buttons = document.querySelectorAll('.nav-buttons button');
+      const contentSections = document.querySelectorAll('.content-section');
+
+      buttons.forEach(button => {
+        button.addEventListener('click', () => {
+          // Retirer la classe active de tous les boutons
+          buttons.forEach(btn => btn.classList.remove('active'));
+          // Ajouter la classe active au bouton cliqué
+          button.classList.add('active');
+
+          // Masquer toutes les sections de contenu
+          contentSections.forEach(section => section.classList.remove('active'));
+
+          // Afficher la section de contenu correspondante
+          const targetId = button.id.replace('-button', '-content');
+          const targetSection = document.getElementById(targetId);
+          if (targetSection) {
+            targetSection.classList.add('active');
+          }
+        });
+      });
+
+      // Mise à jour de la valeur du curseur de sensibilité
+      const sensitivitySlider = document.getElementById('sensitivity');
+      const sensitivityValue = document.getElementById('sensitivity-value');
+
+      sensitivitySlider.addEventListener('input', () => {
+        sensitivityValue.textContent = sensitivitySlider.value;
+      });
+
+      // Gestion de la sauvegarde des paramètres
+      document.querySelector('.save-button').addEventListener('click', () => {
+        alert('Paramètres sauvegardés avec succès !');
+      });
+
+      // Gestion de la réinitialisation des paramètres
+      document.querySelector('.reset-button').addEventListener('click', () => {
+        if (confirm('Êtes-vous sûr de vouloir réinitialiser tous les paramètres ?')) {
+          // Réinitialiser les valeurs par défaut
+          document.getElementById('alarm-toggle').checked = true;
+          document.querySelectorAll('input[name="notification"]').forEach(checkbox => {
+            checkbox.checked = true;
+          });
+          sensitivitySlider.value = 5;
+          sensitivityValue.textContent = 5;
+          document.getElementById('security-mode').value = 'medium';
+          alert('Paramètres réinitialisés avec succès !');
+        }
+      });
+
+      // Gestion du bouton de centrage de la carte
+      document.querySelector('.center-map-button').addEventListener('click', () => {
+        alert('Carte centrée sur la position de la moto.');
+      });
+
+      // Gestion du bouton de suivi en temps réel
+      const trackingButton = document.querySelector('.tracking-button');
+      trackingButton.addEventListener('click', () => {
+        trackingButton.classList.toggle('active');
+        if (trackingButton.classList.contains('active')) {
+          trackingButton.innerHTML = '<i class="fas fa-satellite"></i> Suivi activé';
+          alert('Suivi en temps réel activé.');
+        } else {
+          trackingButton.innerHTML = '<i class="fas fa-satellite"></i> Suivi en temps réel';
+          alert('Suivi en temps réel désactivé.');
+        }
+      });
+
+      // Gestion du bouton de partage de localisation
+      document.querySelector('.share-button').addEventListener('click', () => {
+        const coords = "48.8566° N, 2.3522° E";
+        navigator.clipboard.writeText(coords).then(() => {
+          alert('Coordonnées GPS copiées dans le presse-papiers : ' + coords);
+        });
+      });
+    </script>
+  </body>
+</html>

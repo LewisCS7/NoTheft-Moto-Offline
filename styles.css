@@ -1,0 +1,859 @@
+/* Styles de base */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Open Sans', sans-serif;
+  background: linear-gradient(135deg, #ffffff, #d4d4d4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Conteneur principal */
+#webcrumbs {
+  width: 100%;
+  max-width: 1200px;
+  background-color: white;
+  border-radius: 24px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
+/* Grille responsive */
+.grid-responsive {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-responsive {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Barre de navigation */
+nav.fixed-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 8px 0;
+}
+
+nav.fixed-nav .nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 0 16px;
+}
+
+nav.fixed-nav button {
+  background-color: rgb(238, 238, 238);
+  color: rgb(40, 40, 40);
+  border-radius: 9999px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav.fixed-nav button:hover {
+  background-color: blue;
+  color: white;
+}
+
+nav.fixed-nav button:active {
+  background-color: darkblue;
+  color: white;
+}
+
+nav.fixed-nav button.active {
+  background-color: blue;
+  color: white;
+}
+
+nav.fixed-nav button:hover i {
+  color: white;
+}
+
+/* Masquer le texte sur mobile */
+.hide-text-on-mobile {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .hide-text-on-mobile {
+    display: inline;
+    margin-left: 8px;
+  }
+}
+
+/* Carte interactive */
+.map-container {
+  position: relative;
+  width: 100%;
+  height: 300px; /* Hauteur par défaut pour la page d'accueil */
+  background-color: rgb(238, 238, 238);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 16px;
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Styles pour les sections */
+section {
+  background-color: rgb(247, 247, 247);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+section h1 {
+  font-size: 30px;
+  font-weight: bold;
+  color: rgb(40, 40, 40);
+  margin-bottom: 12px;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+}
+
+section h2 {
+  font-size: 18px;
+  font-weight: bold;
+  color: rgb(40, 40, 40);
+  margin-bottom: 12px;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+}
+
+section h3 {
+  /* font-size: 18px; */
+  /* font-weight: bold; */
+  /* color: rgb(40, 40, 40); */
+  margin-bottom: 12px;
+  text-align: center;
+  /* font-family: 'Montserrat', sans-serif; */
+}
+
+section p {
+  font-size: 14px;
+  color: rgb(40, 40, 40);
+  margin: 0;
+}
+
+/* Styles pour la carte d'état */
+.status-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.status-icon {
+  position: relative;
+  font-size: 32px;
+  color: #2196F3;
+}
+
+.status-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.status-badge.warning {
+  background-color: #FF9800;
+}
+
+.status-badge.alert {
+  background-color: #F44336;
+}
+
+.status-details {
+  flex: 1;
+}
+
+.status-details p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.status-details i {
+  margin-right: 8px;
+  color: #2196F3;
+}
+
+/* Bouton pour centrer la carte */
+.center-map-button {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.center-map-button:hover {
+  background-color: #1976D2;
+}
+
+/* Statut des capteurs */
+.sensor-status {
+  margin-top: 16px;
+}
+
+.sensor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+.sensor-item {
+  background-color: white;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sensor-item i {
+  font-size: 24px;
+  color: #2196F3;
+}
+
+.sensor-item span {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.sensor-value {
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+.sensor-value.normal {
+  color: #4CAF50;
+}
+
+.sensor-value.warning {
+  color: #FF9800;
+}
+
+.sensor-value.alert {
+  color: #F44336;
+}
+
+/* Styles pour l'état des connexions */
+.connections-status {
+  margin-bottom: 24px;
+}
+
+.connection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.connection-item {
+  background-color: white;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.connection-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.connection-item i {
+  font-size: 24px;
+  color: #2196F3;
+}
+
+.connection-item span {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.connection-value {
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+.connection-value.connected {
+  color: #4CAF50;
+}
+
+.connection-value.disconnected {
+  color: #F44336;
+}
+
+/* Styles pour l'état des batteries */
+.batteries-status {
+  margin-top: 24px;
+}
+
+.battery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.battery-item {
+  background-color: white;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.battery-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.battery-item i {
+  font-size: 24px;
+  color: #2196F3;
+}
+
+.battery-item span {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.battery-item progress {
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  margin-top: 8px;
+}
+
+.battery-item progress::-webkit-progress-bar {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+.battery-item progress::-webkit-progress-value {
+  background-color: #4CAF50;
+  border-radius: 5px;
+}
+
+.battery-item progress.low {
+  background-color: #F44336;
+}
+
+.battery-value {
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+/* Styles pour les notifications */
+.notification-item {
+  display: grid;
+  grid-template-columns: 20px 1fr 2fr;
+  gap: 12px;
+  align-items: center;
+  font-size: 14px;
+  color: rgb(40, 40, 40);
+}
+
+.notification-item span {
+  font-weight: 500;
+}
+
+/* Contenu spécifique aux boutons */
+.content-section {
+  display: none;
+}
+
+.content-section.active {
+  display: block;
+}
+
+/* Styles pour les batteries */
+.battery-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.battery-status span {
+  font-size: 14px;
+  color: rgb(40, 40, 40);
+}
+
+.battery-status progress {
+  width: 60%;
+  height: 10px;
+  border-radius: 5px;
+}
+
+/* Styles pour l'état des connexions */
+.connection-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.connection-status span {
+  font-size: 14px;
+  color: rgb(40, 40, 40);
+}
+
+.connection-status i {
+  font-size: 16px;
+}
+
+.connection-status .connected {
+  color: green;
+}
+
+.connection-status .disconnected {
+  color: red;
+}
+
+/* Styles pour l'image */
+.architecture-image {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  display: block;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+/* Styles pour les éléments de configuration */
+.setting-item {
+  margin-bottom: 16px;
+}
+
+.setting-item h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 10px;
+  bottom: 1px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.notification-settings label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.save-button {
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.save-button:hover {
+  background-color: #1976D2;
+}
+
+/* Styles pour les alertes */
+.alert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.alert-item {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.alert-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.alert-icon {
+  font-size: 24px;
+  margin-right: 12px;
+}
+
+.alert-details {
+  flex: 1;
+}
+
+.alert-details h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.alert-details p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.alert-timer {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #888;
+  margin-top: 8px;
+}
+
+.alert-timer i {
+  margin-right: 4px;
+}
+
+.alert-action {
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.alert-action:hover {
+  background-color: #1976D2;
+}
+
+/* Couleurs spécifiques pour les types d'alertes */
+.vibration-alert .alert-icon {
+  color: #FF9800; /* Orange */
+}
+
+.movement-alert .alert-icon {
+  color: #F44336; /* Rouge */
+}
+
+.battery-alert .alert-icon {
+  color: #FFC107; /* Jaune */
+}
+
+/* Styles modernisés pour la section Localisation */
+.full-screen-map {
+  height: 500px; /* Hauteur ajustée pour une meilleure visibilité */
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.map-controls {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.map-controls button {
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.map-controls button:hover {
+  background-color: #1976D2;
+}
+
+.map-info-panel {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 300px;
+}
+
+.map-info-panel h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.map-info-panel p {
+  font-size: 14px;
+  color: #333;
+  margin: 0;
+}
+
+.map-info-panel i {
+  color: #2196F3;
+  margin-right: 8px;
+}
+
+.location-history {
+  margin-top: 24px;
+}
+
+.location-history h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.history-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.history-item i {
+  font-size: 24px;
+  color: #2196F3;
+  margin-right: 12px;
+}
+
+.history-details p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.history-details p strong {
+  font-weight: bold;
+}
+
+.share-location {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.share-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.share-button:hover {
+  background-color: #45a049;
+}
+
+
+/* Styles modernisés pour la section Configuration */
+.setting-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.setting-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.setting-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.setting-header i {
+  font-size: 24px;
+  color: #2196F3;
+  margin-right: 12px;
+}
+
+.setting-header h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.setting-body {
+  margin-bottom: 12px;
+}
+
+.setting-body label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #555;
+}
+
+.setting-body input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.setting-body input[type="range"] {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.setting-body select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  color: #333;
+}
+
+.setting-description {
+  font-size: 12px;
+  color: #777;
+  margin: 0;
+}
+
+/* Boutons de sauvegarde et réinitialisation */
+.setting-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.save-button, .reset-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.save-button {
+  background-color: #2196F3;
+  color: white;
+}
+
+.save-button:hover {
+  background-color: #1976D2;
+}
+
+.reset-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.reset-button:hover {
+  background-color: #d32f2f;
+}

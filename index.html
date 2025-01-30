@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,235 +8,7 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Lato&family=Open+Sans&family=Montserrat:wght@700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato&family=Open+Sans&family=Montserrat:wght@700&display=swap"></noscript>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-      /* Styles de base */
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Open Sans', sans-serif;
-        background: linear-gradient(135deg, #ffffff, #d4d4d4);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-      }
-
-      /* Conteneur principal */
-      #webcrumbs {
-        width: 100%;
-        max-width: 1200px;
-        background-color: white;
-        border-radius: 24px;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-        padding: 0;
-      }
-
-      /* Grille responsive */
-      .grid-responsive {
-        display: grid;
-        grid-template-columns: repeat(1, 1fr);
-        gap: 12px;
-      }
-
-      @media (min-width: 768px) {
-        .grid-responsive {
-          grid-template-columns: repeat(2, 1fr);
-        }
-      }
-
-      @media (min-width: 1024px) {
-        .grid-responsive {
-          grid-template-columns: repeat(3, 1fr);
-        }
-      }
-
-      /* Barre de navigation */
-      nav.fixed-nav {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: white;
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        padding: 8px 0;
-      }
-
-      nav.fixed-nav .nav-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 16px;
-        padding: 0 16px;
-      }
-
-      nav.fixed-nav button {
-        background-color: rgb(238, 238, 238);
-        color: rgb(40, 40, 40);
-        border-radius: 9999px;
-        padding: 8px 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        border: none;
-        transition: background-color 0.3s ease, color 0.3s ease;
-      }
-
-      nav.fixed-nav button:hover {
-        background-color: blue;
-        color: white;
-      }
-
-      nav.fixed-nav button:active {
-        background-color: darkblue;
-        color: white;
-      }
-
-      nav.fixed-nav button.active {
-        background-color: blue;
-        color: white;
-      }
-
-      nav.fixed-nav button:hover i {
-        color: white;
-      }
-
-      /* Masquer le texte sur mobile */
-      .hide-text-on-mobile {
-        display: none;
-      }
-
-      @media (min-width: 640px) {
-        .hide-text-on-mobile {
-          display: inline;
-          margin-left: 8px;
-        }
-      }
-
-      /* Carte interactive */
-      .map-container {
-        position: relative;
-        width: 100%;
-        height: 300px; /* Hauteur par défaut pour la page d'accueil */
-        background-color: rgb(238, 238, 238);
-        border-radius: 24px;
-        overflow: hidden;
-        margin-top: 0;
-      }
-
-      /* Carte en plein écran */
-      .full-screen-map {
-        height: 100vh; /* Hauteur en plein écran */
-        border-radius: 0; /* Supprimer le bord arrondi */
-      }
-
-      .map-container iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
-      }
-
-      /* Styles pour les sections */
-      section {
-        background-color: rgb(247, 247, 247);
-        border-radius: 18px;
-        padding: 12px;
-        margin-bottom: 12px;
-      }
-
-      section h2 {
-        font-size: 18px;
-        font-weight: bold;
-        color: rgb(40, 40, 40);
-        margin-bottom: 8px;
-        text-align: center; /* Centrer les titres */
-        font-family: 'Montserrat', sans-serif; /* Police plus osée */
-      }
-
-      section p {
-        font-size: 16px;
-        color: rgb(40, 40, 40);
-        margin: 0;
-      }
-
-      /* Styles pour les notifications */
-      .notification-item {
-        display: grid;
-        grid-template-columns: 20px 1fr 2fr;
-        gap: 12px;
-        align-items: center;
-        font-size: 14px;
-        color: rgb(40, 40, 40);
-      }
-
-      .notification-item span {
-        font-weight: 500;
-      }
-
-      /* Contenu spécifique aux boutons */
-      .content-section {
-        display: none;
-      }
-
-      .content-section.active {
-        display: block;
-      }
-
-      /* Styles pour les batteries */
-      .battery-status {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 8px;
-      }
-
-      .battery-status span {
-        font-size: 14px;
-        color: rgb(40, 40, 40);
-      }
-
-      .battery-status progress {
-        width: 60%;
-        height: 10px;
-        border-radius: 5px;
-      }
-
-      /* Styles pour l'état des connexions */
-      .connection-status {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 8px;
-      }
-
-      .connection-status span {
-        font-size: 14px;
-        color: rgb(40, 40, 40);
-      }
-
-      .connection-status i {
-        font-size: 16px;
-      }
-
-      .connection-status .connected {
-        color: green;
-      }
-
-      .connection-status .disconnected {
-        color: red;
-      }
-
-      /* Styles pour l'image */
-      .architecture-image {
-        width: 100%;
-        max-width: 600px;
-        margin: 0 auto;
-        display: block;
-        border-radius: 12px;
-        margin-bottom: 16px;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <main id="webcrumbs" role="main">
@@ -244,138 +16,342 @@
       <div id="home-content" class="content-section active">
         <!-- Tableau de bord -->
         <section>
-          <h2>Tableau de bord</h2>
-          <p>Bienvenue sur le tableau de bord de suivi de votre moto.</p>
+          <h1>Tableau de bord</h1>
+          <h3><p>Bienvenue sur le tableau de bord de suivi de votre moto.</p></h3>
         </section>
 
-        <!-- Carte interactive -->
-        <div class="map-container">
-          <iframe 
-            title="Moto Map" 
-            src="https://www.openstreetmap.org/export/embed.html?bbox=-0.09%2C51.505%2C-0.075%2C51.515&amp;layer=mapnik" 
-            aria-label="Carte interactive montrant la position de la moto"
-          ></iframe>
-          <div class="absolute bottom-0 left-0 right-0 text-center py-2 bg-black/70 text-primary-50 text-sm font-title"> 
-            Localisation de la moto 
+        <!-- Section État de la moto -->
+        <section aria-labelledby="moto-status">
+          <h2 id="moto-status">Etat de la moto</h2>
+          <div class="status-card">
+            <!-- Icône et état général -->
+            <div class="status-icon">
+              <i class="fas fa-motorcycle"></i>
+              <span class="status-badge normal">Normal</span>
+            </div>
+            <!-- Détails de l'état -->
+            <div class="status-details">
+              <p><i class="fas fa-info-circle"></i> La moto est actuellement <strong>à l'arrêt</strong>.</p>
+              <p><i class="fas fa-map-marker-alt"></i> Position actuelle : <strong>12 Rue 1425+52, Cotonou</strong></p>
+              <p><i class="fas fa-clock"></i> Dernière mise à jour : <time datetime="2025-01-14T14:35:00">14/01/2025 14:35</time></p>
+            </div>
           </div>
-        </div>
 
-        <!-- Section État et Notifications -->
-        <div class="grid-responsive">
-          <!-- État moto -->
-          <section aria-labelledby="moto-status">
-            <h2 id="moto-status">État de la moto</h2>
-            <p role="status" aria-live="polite">À l'arrêt</p>
-            <p class="mt-2">
-              <span class="font-medium">Position actuelle</span>
-              <time datetime="2023-10-12T14:35:00">12/10/2023 14:35</time>
-            </p>
-          </section>
+          <!-- Carte interactive -->
+          <div class="map-container">
+            <iframe 
+              title="Moto Map" 
+              src="https://www.openstreetmap.org/export/embed.html?bbox=-0.09%2C51.505%2C-0.075%2C51.515&amp;layer=mapnik" 
+              aria-label="Carte interactive montrant la position de la moto"
+            ></iframe>
+            <button class="center-map-button">
+              <i class="fas fa-crosshairs"></i> Centrer sur la moto
+            </button>
+          </div>
 
-          <!-- Notifications -->
-          <section aria-labelledby="notifications">
-            <h2 id="notifications">Dernières notifications</h2>
-            <ul class="mt-2 space-y-2">
-              <li class="notification-item">
-                <span>⚠️</span>
-                <span class="font-medium">12/10/2023 14:50</span>
-                <span>Détection de mouvement suspect</span>
-              </li>
-              <li class="notification-item">
-                <span>🔒</span>
-                <span class="font-medium">12/10/2023 14:45</span>
-                <span>Alarme anti-vol activée</span>
-              </li>
-              <li class="notification-item">
-                <span>📍</span>
-                <span class="font-medium">12/10/2023 14:40</span>
-                <span>Changement de position détecté</span>
-              </li>
-            </ul>
-          </section>
-        </div>
+          <!-- Statut des capteurs -->
+          <div class="sensor-status">
+            <h3>Statut des capteurs</h3>
+            <div class="sensor-grid">
+              <div class="sensor-item">
+                <i class="fas fa-vihara"></i>
+                <span>Vibration</span>
+                <span class="sensor-value normal">Normal</span>
+              </div>
+              <div class="sensor-item">
+                <i class="fas fa-running"></i>
+                <span>Mouvement</span>
+                <span class="sensor-value warning">Suspect</span>
+              </div>
+              <div class="sensor-item">
+                <i class="fas fa-battery-three-quarters"></i>
+                <span>Batterie</span>
+                <span class="sensor-value normal">75%</span>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
 
       <div id="connections-batteries-content" class="content-section">
-        <section>
-          <h2>État des connexions et batteries</h2>
-          <!-- Image de l'architecture du système -->
-          <img src="Capture d’écran 2025-01-19 021348.png" alt="Architecture du système" class="architecture-image">
+        <!-- Section Connexions & Batteries -->
+        <section aria-labelledby="connections-batteries">
+          <h2 id="connections-batteries">Connexions & Batteries</h2>
 
           <!-- État des connexions -->
-          <div class="connection-status">
-            <span>Bluetooth1 - Lora1</span>
-            <i class="fas fa-circle connected"></i>
-          </div>
-          <div class="connection-status">
-            <span>Lora1 - Lora2</span>
-            <i class="fas fa-circle disconnected"></i>
-          </div>
-          <div class="connection-status">
-            <span>Lora2 - Bluetooth du téléphone</span>
-            <i class="fas fa-circle connected"></i>
+          <div class="connections-status">
+            <h3>Etat des connexions</h3>
+            <div class="connection-grid">
+              <div class="connection-item">
+                <i class="fas fa-bluetooth-b"></i>
+                <span>Bluetooth1 - Lora1</span>
+                <span class="connection-value connected">Connecté</span>
+              </div>
+              <div class="connection-item">
+                <i class="fas fa-wifi"></i>
+                <span>Lora1 - Lora2</span>
+                <span class="connection-value connected">Connecté</span>
+              </div>
+              <div class="connection-item">
+                <i class="fas fa-bluetooth-b"></i>
+                <span>Lora2 - Bluetooth 2</span>
+                <span class="connection-value connected">Connecté</span>
+              </div>
+            </div>
           </div>
 
           <!-- État des batteries -->
-          <div class="battery-status">
-            <span>Batterie 1</span>
-            <progress value="75" max="100"></progress>
-            <span>75%</span>
-          </div>
-          <div class="battery-status">
-            <span>Batterie 2</span>
-            <progress value="50" max="100"></progress>
-            <span>50%</span>
+          <div class="batteries-status">
+            <h3>Etat des batteries</h3>
+            <div class="battery-grid">
+              <div class="battery-item">
+                <i class="fas fa-battery-three-quarters"></i>
+                <span>Batterie 1</span>
+                <progress value="75" max="100"></progress>
+                <span class="battery-value">75%</span>
+              </div>
+              <div class="battery-item">
+                <i class="fas fa-battery-half"></i>
+                <span>Batterie 2</span>
+                <progress value="50" max="100"></progress>
+                <span class="battery-value">50%</span>
+              </div>
+            </div>
           </div>
         </section>
       </div>
 
       <div id="location-content" class="content-section">
-        <!-- Carte interactive en plein écran -->
-        <div class="map-container full-screen-map">
-          <iframe 
-            title="Moto Map" 
-            src="https://www.openstreetmap.org/export/embed.html?bbox=-0.09%2C51.505%2C-0.075%2C51.515&amp;layer=mapnik" 
-            aria-label="Carte interactive montrant la position de la moto"
-          ></iframe>
-          <div class="absolute bottom-0 left-0 right-0 text-center py-2 bg-black/70 text-primary-50 text-sm font-title"> 
-            Localisation de la moto 
-          </div>
-        </div>
-      </div>
-
-      <div id="settings-content" class="content-section">
+        <!-- Section Localisation -->
         <section>
-          <h2>Configuration</h2>
-          <p>Paramètres de votre moto :</p>
-          <ul>
-            <li>Activer/désactiver l'alarme</li>
-            <li>Changer le mode de suivi</li>
-            <li>Configurer les notifications</li>
-          </ul>
+          <h2>Localisation</h2>
+          <p>Suivez la position de votre moto en temps réel.</p>
+
+          <!-- Carte interactive en plein écran -->
+          <div class="map-container full-screen-map">
+            <iframe 
+              title="Moto Map" 
+              src="https://www.openstreetmap.org/export/embed.html?bbox=-0.09%2C51.505%2C-0.075%2C51.515&amp;layer=mapnik" 
+              aria-label="Carte interactive montrant la position de la moto"
+            ></iframe>
+            <!-- Contrôles de la carte -->
+            <div class="map-controls">
+              <button class="center-map-button">
+                <i class="fas fa-crosshairs"></i> Centrer sur la moto
+              </button>
+              <button class="tracking-button">
+                <i class="fas fa-satellite"></i> Suivi en temps réel
+              </button>
+            </div>
+            <!-- Panneau d'informations -->
+            <div class="map-info-panel">
+              <h3>Position actuelle</h3>
+              <p><i class="fas fa-map-marker-alt"></i> <strong>Coordonnées GPS :</strong> 48.8566° N, 2.3522° E</p>
+              <p><i class="fas fa-clock"></i> <strong>Dernière mise à jour :</strong> <time datetime="2025-01-14T14:35:00">14/01/2025 14:35</time></p>
+            </div>
+          </div>
+
+          <!-- Historique des positions -->
+          <div class="location-history">
+            <h3>Historique des positions</h3>
+            <div class="history-list">
+              <div class="history-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="history-details">
+                  <p><strong>12 Rue 1425+52, Cotonou</strong></p>
+                  <p><time datetime="2023-10-12T14:35:00">14/01/2025 14:35</time></p>
+                </div>
+              </div>
+              <div class="history-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="history-details">
+                  <p><strong>15 Ste Rita, Cotonou</strong></p>
+                  <p><time datetime="2023-10-12T12:15:00">14/01/2025 12:15</time></p>
+                </div>
+              </div>
+              <div class="history-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="history-details">
+                  <p><strong>10 Rue de Rivoli, Cotonou</strong></p>
+                  <p><time datetime="2023-10-12T10:00:00">14/01/2025 10:00</time></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bouton de partage de localisation -->
+          <div class="share-location">
+            <button class="share-button">
+              <i class="fas fa-share-alt"></i> Partager la localisation
+            </button>
+          </div>
         </section>
       </div>
 
       <div id="alerts-content" class="content-section">
+        <!-- Section Alertes -->
         <section>
           <h2>Alertes</h2>
-          <ul class="mt-2 space-y-2">
-            <li class="notification-item">
-              <span>⚠️</span>
-              <span class="font-medium">12/10/2023 14:50</span>
-              <span>Détection de mouvement suspect</span>
-            </li>
-            <li class="notification-item">
-              <span>🔒</span>
-              <span class="font-medium">12/10/2023 14:45</span>
-              <span>Alarme anti-vol activée</span>
-            </li>
-            <li class="notification-item">
-              <span>📍</span>
-              <span class="font-medium">12/10/2023 14:40</span>
-              <span>Changement de position détecté</span>
-            </li>
-          </ul>
+          <div class="alert-list">
+            <!-- Alerte de vibration -->
+            <div class="alert-item vibration-alert">
+              <div class="alert-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <div class="alert-details">
+                <h3>Vibration détectée</h3>
+                <p>Une vibration sur votre moto a été détectée.</p>
+                <div class="alert-timer">
+                  <i class="fas fa-clock"></i>
+                  <span>Depuis 00:00:14</span>
+                </div>
+              </div>
+              <button class="alert-action">Marquer comme lue</button>
+            </div>
+
+            <!-- Alerte de mouvement suspect -->
+            <div class="alert-item movement-alert">
+              <div class="alert-icon">
+                <i class="fas fa-running"></i>
+              </div>
+              <div class="alert-details">
+                <h3>Mouvement suspect</h3>
+                <p>Un mouvement suspect a été détecté près de votre moto.</p>
+                <div class="alert-timer">
+                  <i class="fas fa-clock"></i>
+                  <span>Depuis 00:01:30</span>
+                </div>
+              </div>
+              <button class="alert-action">Marquer comme lue</button>
+            </div>
+
+            <!-- Alerte de niveau de batterie faible -->
+            <div class="alert-item battery-alert">
+              <div class="alert-icon">
+                <i class="fas fa-battery-quarter"></i>
+              </div>
+              <div class="alert-details">
+                <h3>Batterie faible</h3>
+                <p>La batterie de votre dispositif 1 de suivi est faible.</p>
+                <div class="alert-timer">
+                  <i class="fas fa-clock"></i>
+                  <span>Depuis 00:05:00</span>
+                </div>
+              </div>
+              <button class="alert-action">Marquer comme lue</button>
+            </div>
+
+            <!-- Alerte Batterie faible -->
+              <div class="alert-item battery-alert">
+                <div class="alert-icon">
+                  <i class="fas fa-battery-quarter"></i>
+                </div>
+                <div class="alert-details">
+                  <h3>Batterie faible</h3>
+                  <p>La batterie de votre dispositif 1 de suivi est faible.</p>
+                  <div class="alert-timer">
+                    <i class="fas fa-clock"></i>
+                    <span>Depuis 00:15:00</span>
+                  </div>
+                </div>
+                <button class="alert-action">Marquer comme lue</button>
+          </div>
+        </section>
+      </div>
+
+      <div id="settings-content" class="content-section">
+        <!-- Section Configuration -->
+        <section>
+          <h2>Configuration</h2>
+          <p>Personnalisez les paramètres de votre moto selon vos préférences.</p>
+      
+          <!-- Section Alarme anti-vol -->
+          <div class="setting-card">
+            <div class="setting-header">
+              <i class="fas fa-shield-alt"></i>
+              <h3>Alarme anti-vol</h3>
+            </div>
+            <div class="setting-body">
+              <label class="switch">
+                <input type="checkbox" id="alarm-toggle" checked>
+                <span class="slider round"></span>
+              </label>
+              <span>Activer l'alarme</span>
+            </div>
+            <p class="setting-description">
+              Activez cette option pour recevoir des alertes en cas de mouvement suspect.
+            </p>
+          </div>
+      
+          <!-- Section Notifications -->
+          <div class="setting-card">
+            <div class="setting-header">
+              <i class="fas fa-bell"></i>
+              <h3>Notifications</h3>
+            </div>
+            <div class="setting-body">
+              <label>
+                <input type="checkbox" name="notification" value="movement" checked>
+                Détection de mouvement
+              </label>
+              <label>
+                <input type="checkbox" name="notification" value="alarm">
+                Activation de l'alarme
+              </label>
+              <label>
+                <input type="checkbox" name="notification" value="battery">
+                Niveau de batterie faible
+              </label>
+            </div>
+            <p class="setting-description">
+              Choisissez les types de notifications que vous souhaitez recevoir.
+            </p>
+          </div>
+      
+          <!-- Section Sensibilité des capteurs -->
+          <div class="setting-card">
+            <div class="setting-header">
+              <i class="fas fa-tachometer-alt"></i>
+              <h3>Sensibilité des capteurs</h3>
+            </div>
+            <div class="setting-body">
+              <label for="sensitivity">Niveau de sensibilité :</label>
+              <input type="range" id="sensitivity" name="sensitivity" min="1" max="10" value="5">
+              <span id="sensitivity-value">5</span>
+            </div>
+            <p class="setting-description">
+              Ajustez la sensibilité des capteurs de vibration et de mouvement.
+            </p>
+          </div>
+      
+          <!-- Section Sécurité -->
+          <div class="setting-card">
+            <div class="setting-header">
+              <i class="fas fa-lock"></i>
+              <h3>Sécurité</h3>
+            </div>
+            <div class="setting-body">
+              <label for="security-mode">Mode de sécurité :</label>
+              <select id="security-mode" name="security-mode">
+                <option value="low">Faible</option>
+                <option value="medium" selected>Moyen</option>
+                <option value="high">Élevé</option>
+              </select>
+            </div>
+            <p class="setting-description">
+              Choisissez le niveau de sécurité pour votre moto.
+            </p>
+          </div>
+      
+          <!-- Boutons de sauvegarde et réinitialisation -->
+          <div class="setting-actions">
+            <button class="save-button">
+              <i class="fas fa-save"></i> Sauvegarder les paramètres
+            </button>
+            <button class="reset-button">
+              <i class="fas fa-undo"></i> Réinitialiser
+            </button>
+          </div>
         </section>
       </div>
     </main>
@@ -392,7 +368,7 @@
         <!-- Bouton Connexions & Batteries -->
         <button id="connections-batteries-button" aria-label="Connexions & Batteries">
           <i class="fas fa-plug"></i>
-          <span class="hide-text-on-mobile">Connexions & Batteries</span>
+          <span class="hide-text-on-mobile">Connectivité</span>
         </button>
 
         <!-- Bouton Localisation -->
@@ -401,16 +377,16 @@
           <span class="hide-text-on-mobile">Localisation</span>
         </button>
 
-        <!-- Bouton Configuration -->
-        <button id="settings-button" aria-label="Configurer la moto">
-          <i class="fas fa-cog"></i>
-          <span class="hide-text-on-mobile">Configuration</span>
-        </button>
-
         <!-- Bouton Alertes -->
         <button id="alerts-button" aria-label="Recevoir les alertes">
           <i class="fas fa-bell"></i>
           <span class="hide-text-on-mobile">Alertes</span>
+        </button>
+
+        <!-- Bouton Configuration -->
+        <button id="settings-button" aria-label="Configurer la moto">
+          <i class="fas fa-cog"></i>
+          <span class="hide-text-on-mobile">Configuration</span>
         </button>
       </div>
     </nav>
@@ -436,6 +412,60 @@
           if (targetSection) {
             targetSection.classList.add('active');
           }
+        });
+      });
+
+      // Mise à jour de la valeur du curseur de sensibilité
+      const sensitivitySlider = document.getElementById('sensitivity');
+      const sensitivityValue = document.getElementById('sensitivity-value');
+
+      sensitivitySlider.addEventListener('input', () => {
+        sensitivityValue.textContent = sensitivitySlider.value;
+      });
+
+      // Gestion de la sauvegarde des paramètres
+      document.querySelector('.save-button').addEventListener('click', () => {
+        alert('Paramètres sauvegardés avec succès !');
+      });
+
+      // Gestion de la réinitialisation des paramètres
+      document.querySelector('.reset-button').addEventListener('click', () => {
+        if (confirm('Êtes-vous sûr de vouloir réinitialiser tous les paramètres ?')) {
+          // Réinitialiser les valeurs par défaut
+          document.getElementById('alarm-toggle').checked = true;
+          document.querySelectorAll('input[name="notification"]').forEach(checkbox => {
+            checkbox.checked = true;
+          });
+          sensitivitySlider.value = 5;
+          sensitivityValue.textContent = 5;
+          document.getElementById('security-mode').value = 'medium';
+          alert('Paramètres réinitialisés avec succès !');
+        }
+      });
+
+      // Gestion du bouton de centrage de la carte
+      document.querySelector('.center-map-button').addEventListener('click', () => {
+        alert('Carte centrée sur la position de la moto.');
+      });
+
+      // Gestion du bouton de suivi en temps réel
+      const trackingButton = document.querySelector('.tracking-button');
+      trackingButton.addEventListener('click', () => {
+        trackingButton.classList.toggle('active');
+        if (trackingButton.classList.contains('active')) {
+          trackingButton.innerHTML = '<i class="fas fa-satellite"></i> Suivi activé';
+          alert('Suivi en temps réel activé.');
+        } else {
+          trackingButton.innerHTML = '<i class="fas fa-satellite"></i> Suivi en temps réel';
+          alert('Suivi en temps réel désactivé.');
+        }
+      });
+
+      // Gestion du bouton de partage de localisation
+      document.querySelector('.share-button').addEventListener('click', () => {
+        const coords = "48.8566° N, 2.3522° E";
+        navigator.clipboard.writeText(coords).then(() => {
+          alert('Coordonnées GPS copiées dans le presse-papiers : ' + coords);
         });
       });
     </script>
